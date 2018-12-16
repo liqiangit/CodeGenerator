@@ -1,0 +1,63 @@
+<div class="easyui-layout layout1" >
+	<div data-options="region:'west',split:true" class="west1">
+		<ul id="employee_org_west_tree"></ul>
+	</div>
+	<div data-options="region:'center'">
+		<div class="easyui-layout" data-options="fit:true,border:false">
+			<div class="easyui-layout" data-options="fit : true,border : false">
+				<div data-options="region:'north',border:false" class="formserach" style="padding: 10px; overflow: hidden;" align="left">
+					<form id="manage_employee_searchform" onsubmit="return false">
+						<input type="hidden" name="orgCode" id="manage_employee_searchform_orgCode" value="" />
+						<input type="hidden" id="imgBaseUrl" th:attr="value=${imgBaseUrl}" />
+						<div>
+							<span th:text="#{vip_people_employee_list_name}+':'"></span>
+							<input type="text" size="15" name="name" class="easyui-textbox" validType="byteLength[1,64]" />	 
+							&nbsp;&nbsp;<span th:text="#{vip_people_employee_list_peopleNum}+':'"></span>
+							<input type="text" size="15" name="workCode" class="easyui-textbox" validType="byteLength[1,64]" />	 
+							&nbsp;&nbsp;<span th:text="#{vip_people_employee_list_idcardNum}+':'"></span>
+							<input type="text" size="15" name="idCard" class="easyui-textbox" validType="byteLength[1,64]" />	 	
+							&nbsp;&nbsp;<span th:text="#{vip_people_employee_list_peopleType}+':'"></span>
+							<input class="easyui-combobox" size="15" style="width: 160px;" name="userType" data-options="editable:false,valueField:'id',textField:'text',url:'../dic/selectDicValuesByDicType?dicType=20&amp;needAll=1'" />
+							<a class="easyui-linkbutton" iconCls="icon-search" plian="false" resId="109104101" style="display:none1"
+								href="javascript:$employee.searchData();" th:text="#{vip_people_employee_list_search}"></a>
+						</div>
+					</form>
+				</div>
+				<div data-options="region:'center',border:false">
+			    	<table id="manage_employee_datagrid" class="easyui-datagrid" striped="true" toolbar="#manage_employee_toolbar" rownumbers="true" fitColumns="true" 
+			    		fit="true" border="false" pagination="true" idField="id" pageSize="20" pageList="[ 10, 20, 30, 40, 50 ]" singleSelect="false">
+						<thead>
+							<tr>
+								<th field="showCheckboxWithId" checkbox="true" data-options="formatter:function(value, row, index){return row.id;}" th:text="#{vip_people_employee_list_number}"></th>
+								<th data-options="halign:'center',align:'left'" field="name"  			width="10%" th:text="#{vip_people_employee_list_peopleName}"></th>
+								<th data-options="halign:'center',align:'left'" field="workCode"  		width="12%" th:text="#{vip_people_employee_list_peopleNum}"></th>
+								<th data-options="halign:'center',align:'left'" field="userTypeName"  	width="12%" th:text="#{vip_people_employee_list_peopleType}"></th>
+								<th data-options="halign:'center',align:'center'" field="picture"  		width="15%" formatter="$employee.formatter.showPicture" th:text="#{vip_people_employee_list_registGravatar}"></th>
+								<th data-options="halign:'center',align:'left'" field="idCard"    		width="18%" th:text="#{vip_people_employee_list_idcardNum}"></th>
+								<th data-options="halign:'center',align:'left'" field="orgName" 		width="15%" th:text="#{vip_people_employee_list_belongOrganization}" ></th>
+								<th data-options="halign:'center',align:'left'" field="_operate"  		width="15%" formatter="$employee.formatter.operater" th:text="#{vip_people_employee_list_operation}"></th>
+							</tr>
+						</thead>
+					</table>
+					<div id="manage_employee_action" class="hide">
+						<a class="easyui-linkbutton" iconCls="icon-edit" plain="true" resId="109104103"
+							href="javascript:$employee.edit('{id}');" th:text="#{vip_people_employee_list_update}"></a>
+		    			<a class="easyui-linkbutton" iconCls="icon-remove" plain="true" resId="109104104"
+		    				href="javascript:$employee.del('{id}');" th:text="#{vip_people_employee_list_delete}"></a>
+					</div>
+					<div id="manage_employee_toolbar">
+						<a href="javascript:$employee.add();" class="easyui-linkbutton" iconCls="icon-add" th:title="#{vip_people_employee_list_addPeople}" resId="109104102"
+							style="display:none1" plain="true"><span th:text="#{vip_people_employee_list_addPeople}"></span></a>
+						<a href="javascript:$employee.batchAdd();" class="easyui-linkbutton" iconCls="icon-add" th:title="#{vip_people_employee_list_batchAdd}" resId="109104102"
+							style="display:none1" plain="true"><span th:text="#{vip_people_employee_list_batchAdd}"></span></a>
+						<a href="javascript:$employee.batchDelete();" class="easyui-linkbutton" iconCls="icon-cancel" th:title="#{vip_people_employee_list_batchDelete}" resId="109104102"
+							style="display:none1" plain="true"><span th:text="#{vip_people_employee_list_batchDelete}"></span></a>
+						<a href="javascript:$employee.batchPush();" class="easyui-linkbutton" iconCls="icon-redo" th:title="#{vip_people_employee_list_batchDownload}" resId="110102107"
+							style="display:none1" plain="true"><span th:text="#{vip_people_employee_list_batchDownload}"></span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="../js/vip/people/employee.js" charset="utf-8"></script>

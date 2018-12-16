@@ -1,0 +1,185 @@
+
+<style>
+	.image-list span {
+		position: absolute;
+		top: 43px;
+		padding: 2px 5px;
+		background: no-repeat,rgba(163, 133, 220, 1);
+		/**IE8下不支持rgba  用IE的filter **/
+		filter: progid:DXImageTransform.Microsoft.gradient(startcolorstr=#A385DC,endcolorstr=#A385DC);
+		color: white;
+		cursor: pointer;
+	}
+	.image-list > div {
+		display:inline-block;
+		background-size:cover;
+		width:96px;
+		height:96px;
+		cursor: pointer;
+	}
+	.image-list > img {
+		cursor: pointer;
+	}
+	.fileClass{position:absolute; margin:0px; opacity:0;filter:alpha(opacity:0); z-index:999;
+		width:96px;
+		height:96px;
+	}
+</style>
+<div align="center" class="cw-falcon">
+
+	<form id="manage_employee_editform" th:action="@{/people/employee/save}" th:object="${employee}" method="post">
+		<input type="hidden" name="action" 		th:attr="value=${action}" />
+		<input type="hidden" id="oldOrgCode" name="oldOrgCode" 	th:attr="value=${employee.orgCode}"/>
+		<input type="hidden" id="oldUserType" name="oldUserType" 	th:attr="value=${employee.userType}"/>
+		<input type="hidden" id="oldDeptCode" 	th:attr="value=${employee.deptCode}"/>
+		<input th:if="${employee.birthday}" type="hidden" id="oldBirthday" 	th:attr="value=${#dates.format(employee.birthday, 'yyyy-MM-dd')}"/>
+		<input type="hidden" id="picPath" 		th:attr="value=${employee.picture}" />
+		<input type="hidden" id="imageArray" name="imageArray" th:attr="value=${employee.imageArray}" />
+		<input type="hidden" id="imgBaseUrl" 	th:attr="value=${imgBaseUrl}" />
+		<input type="hidden" name="id" 			th:field="*{id}"/>
+		<table class="tableForm edit" width="100%">
+			<tr>
+				<th th:text="#{vip_people_employee_edit_registGravatar}+':'"></th>
+				<td>
+					<div class="image-list">
+						<div id="vip_idcard_addImg1div"   >
+							<input    id="vip_idcard_add_upload_img1" type="file" name="upload_img1"  class="fileClass"  accept="image/bmp,image/jpeg,image/png,image/gif" />
+							<img id="vip_idcard_addImg1"  src="../images/upload.png"  width="96" height="96" data-index="0"/>
+						</div>
+						<!--<span onclick="delPic(0);" style="left:141px;">X</span>-->
+						<!--<div >-->
+							<!--<input    id="vip_idcard_add_upload_img2" type="file" name="upload_img2" class="fileClass" accept="image/bmp,image/jpeg,image/png,image/gif" />-->
+							<!--<img id="vip_idcard_addImg2" src="../images/upload.png" width="96" height="96" data-index="1"/>-->
+						<!--</div>-->
+						<!--<span onclick="delPic(1);" style="left:241px;">X</span>-->
+						<!--<div >-->
+							<!--<input    id="vip_idcard_add_upload_img3" type="file" name="upload_img3" class="fileClass"  accept="image/bmp,image/jpeg,image/png,image/gif" />-->
+
+							<!--<img id="vip_idcard_addImg3" src="../images/upload.png" width="96" height="96" data-index="2"/>-->
+						<!--</div>-->
+						<!--<span onclick="delPic(2);" style="left:341px;">X</span>-->
+
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_peopleType}+':'"></th>
+				<td>
+					<input class="easyui-combobox" id="employee_userType" name="userType"  th:field="*{userType}" style="width: 300px; height: 26px; border:0;"
+		    			data-options="required:true,multiple:true,editable:false,valueField:'id',textField:'text',url:'../dic/selectDicValuesByDicType?dicType=20'" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_name}+':'"></th>
+				<td>
+					<input type="text" name="name" th:field="*{name}" class="easyui-textbox" style="width: 300px; height: 26px; border:0"
+						data-options="" validType="byteLength[1,20]" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_peopleNum}+':'"></th>
+				<td>
+					<input type="text" name="workCode" th:field="*{workCode}" class="easyui-textbox" style="width: 300px; height: 26px; border:0"
+						data-options="required:true" validType="byteLength[1,20]" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_idcardNum}+':'"></th>
+				<td>
+					<input type="text" name="idCard" th:field="*{idCard}" class="easyui-textbox" style="width: 300px; height: 26px; border:0"
+						data-options="required:false" validType="idCard" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_birthday}+':'"></th>
+				<td>
+
+					<input type="text" id="birthday" name="birthday" th:field="*{birthday}" class="easyui-datebox" style="width: 300px; height: 26px; border:0"
+						data-options="required:false"  validType="date" />
+
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_gender}+':'"></th>
+				<td th:if="*{gender == 1}">
+					<input type="radio" name="gender" checked="checked" value="1" th:text="#{vip_people_employee_edit_mail}"></input>
+					<input type="radio" name="gender" value="0" th:text="#{vip_people_employee_edit_femail}"></input>
+				</td>
+				<td th:if="*{gender == 0}">
+					<input type="radio" name="gender" value="1" th:text="#{vip_people_employee_edit_mail}"></input>
+					<input type="radio" name="gender" checked="checked" value="0" th:text="#{vip_people_employee_edit_femail}"></input>
+				</td>
+				<td th:if="*{gender != 1 and gender != 0}">
+					<input type="radio" name="gender" checked="checked" value="1" th:text="#{vip_people_employee_edit_mail}"></input>
+					<input type="radio" name="gender" value="0" th:text="#{vip_people_employee_edit_femail}"></input>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_belongOrganization}+':'"></th>
+				<td>
+					<input class="easyui-combotree" id="orgCodeId" name="orgCode" data-options="required:true" style="width: 300px; height: 26px; border:0;" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_belongDepartment}+':'"></th>
+				<td>
+					<input id="deptCodeId" name="deptCode" data-options="required:false" style="width: 300px; height: 26px; border:0"/>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_position}+':'"></th>
+				<td>
+					<input type="text" name="position" th:field="*{position}" class="easyui-textbox" style="width: 300px; height: 26px; border:0"
+						data-options="required:false" validType="byteLength[1,20]" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_phone}+':'"></th>
+				<td>
+					<input type="text" name="telephone" th:field="*{telephone}" class="easyui-textbox" style="width: 300px; height: 26px; border:0"
+						data-options="buttons:buttons" validType="telephone" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_email}+':'"></th>
+				<td>
+					<input type="text" name="email" th:field="*{email}" class="easyui-textbox" style="width: 300px; height: 26px; border:0"
+						data-options="required:false" validType="email" />
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{vip_people_employee_edit_remarks}+':'"></th>
+				<td>
+					<input type="text" name="remark" th:field="*{remark}" class="easyui-textbox" style="width:300px;height:60px" data-options="multiline:true,rows:3"
+						validType="byteLength[1,255]" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+	var buttons = $.extend([], $.fn.datebox.defaults.buttons);
+	buttons.splice(1, 0, {
+	text: i18nData.vip.people.employee_edit.clean,
+	handler : function(target) {
+	    $(target).combo("setValue", "").combo("setText", ""); // 设置空值
+	    $(target).combo("hidePanel"); // 点击清空按钮之后关闭日期选择面板
+	}
+	});
+	$.fn.datebox.defaults.buttons = buttons;
+	$('#employee_birthday').datebox({ editable:false });
+	$(function(){
+
+		//下拉机构树
+		$('#orgCodeId').combotree({
+		    url : '../organization/selectOrgTree?sourceType=1',
+		    parentField : 'id',
+		    lines : true,
+		    panelHeight : 'auto',
+		    onLoadSuccess: function(node, data){
+				$('#orgCodeId').combotree('setValue', $('#oldOrgCode').val());
+			}
+		});
+	});
+</script>
+<script type="text/javascript" src="../js/vip/people/uploadImg.js" charset="utf-8"></script>

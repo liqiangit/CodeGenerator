@@ -1,0 +1,20 @@
+							</tr>
+						</thead>
+					</table>
+					<div id="manage_${entity}_action" class="hide">
+						<a class="easyui-linkbutton" iconCls="icon-edit" plain="true" resId="109104103"
+							href="javascript:$${entity}.edit('{id}');" th:text="#{vip_people_${entity}_list_update}"></a>
+		    			<a class="easyui-linkbutton" iconCls="icon-remove" plain="true" resId="109104104"
+		    				href="javascript:$${entity}.del('{id}');" th:text="#{vip_people_${entity}_list_delete}"></a>
+					</div>
+					<div id="manage_${entity}_toolbar">
+						<a href="javascript:$${entity}.add();" class="easyui-linkbutton" iconCls="icon-add" th:title="#{vip_people_${entity}_list_addPeople}" resId="109104102"
+							style="display:none1" plain="true"><span th:text="#{vip_people_${entity}_list_addPeople}"></span></a>
+						<a href="javascript:$${entity}.batchAdd();" class="easyui-linkbutton" iconCls="icon-add" th:title="#{vip_people_${entity}_list_batchAdd}" resId="109104102"
+							style="display:none1" plain="true"><span th:text="#{vip_people_${entity}_list_batchAdd}"></span></a>
+						<a href="javascript:$${entity}.batchDelete();" class="easyui-linkbutton" iconCls="icon-cancel" th:title="#{vip_people_${entity}_list_batchDelete}" resId="109104102"
+							style="display:none1" plain="true"><span th:text="#{vip_people_${entity}_list_batchDelete}"></span></a>
+						<a href="javascript:$${entity}.batchPush();" class="easyui-linkbutton" iconCls="icon-redo" th:title="#{vip_people_${entity}_list_batchDownload}" resId="110102107"
+							style="display:none1" plain="true"><span th:text="#{vip_people_${entity}_list_batchDownload}"></span></a>
+					</div>
+				</div>					
