@@ -395,10 +395,7 @@ public class GenUI extends JPanel {
 				new Thread(new Runnable() {
 
 					public void run() {
-						int row = tableM.getRowCount() - 1;
-						for (int i = row; i >= 0; i--) {
-							tableM.removeRow(i);
-						}
+						clearTable();
 					}
 				}).start();
 			}
@@ -426,6 +423,7 @@ public class GenUI extends JPanel {
 				new Thread(new Runnable() {
 
 					public void run() {
+						clearTable();
 						int returnVal = fc.showOpenDialog(GenUI.this);
 						if (returnVal == JFileChooser.APPROVE_OPTION) {
 							File file = fc.getSelectedFile();
@@ -479,7 +477,12 @@ public class GenUI extends JPanel {
 			}
 		});
 	}
-
+	private void clearTable() {
+		int row = tableM.getRowCount() - 1;
+		for (int i = row; i >= 0; i--) {
+			tableM.removeRow(i);
+		}
+	}
 	public static void generate(UIParams params) {
 		try {
 			UIPanel uiPanel = UIUtils.convert(params);
