@@ -9,7 +9,6 @@ public class ReflectionUtil {
 	public static List<Field> getFields(Class tempClass) {
 		List<Field> fieldList = new ArrayList<Field>();
 		while (tempClass != null) {// 当父类为null的时候说明到达了最上层的父类(Object类).
-//			fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
 			Field[] fields=tempClass.getDeclaredFields();
 			for (int i = 0; i < fields.length; i++) {
 				Field field=fields[i];
@@ -19,9 +18,6 @@ public class ReflectionUtil {
 				fieldList.add(field);
 			}
 			tempClass = tempClass.getSuperclass(); // 得到父类,然后赋给自己
-		}
-		for (Field f : fieldList) {
-			System.out.println(f.getName());
 		}
 		return fieldList;
 	}

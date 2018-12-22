@@ -42,6 +42,10 @@ public class UIParam {
 	 */
 	private String length;
 	/**
+	 * 查询方式，0普通查询，1范围查询，default=0
+	 */
+	private Integer searchType = 0;
+	/**
 	 * 表单显示
 	 */
 	private Boolean formShow = false;
@@ -164,6 +168,14 @@ public class UIParam {
 
 	public void setLength(String length) {
 		this.length = length;
+	}
+
+	public Integer getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(Integer searchType) {
+		this.searchType = searchType;
 	}
 
 	public Boolean getIsPk() {

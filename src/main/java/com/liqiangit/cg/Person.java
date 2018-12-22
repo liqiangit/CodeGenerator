@@ -5,6 +5,8 @@ package com.liqiangit.cg;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.liqiangit.cg.generator.Comment;
+
 public class Person implements Serializable{
 
 	/**
@@ -32,6 +34,7 @@ public class Person implements Serializable{
 	 * CTFTYPE
 	 * 证件类型
 	 */
+	@Comment(comment="证件类型")
 	private String ctftype;
 	/**
 	 * CTFNO

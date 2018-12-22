@@ -48,10 +48,26 @@ public class UIUtils {
 				formList.add(uiParam);
 			}
 			if (param.getSearchShow()) {
-				UIParam uiParam=new UIParam();
-				BeanUtils.copyProperties(uiParam, param);
-				uiParam.setTag(uiParam.getType());
-				searchList.add(uiParam);
+				Integer searchType=param.getSearchType();
+				if(searchType==1){
+					UIParam uiParam=new UIParam();
+					BeanUtils.copyProperties(uiParam, param);
+					uiParam.setTag(uiParam.getType());
+					uiParam.setName(uiParam.getName()+"Start");
+					searchList.add(uiParam);
+					uiParam=new UIParam();
+					BeanUtils.copyProperties(uiParam, param);
+					uiParam.setTag(uiParam.getType());
+					uiParam.setLabel("至");
+					uiParam.setLabelMessage("time_end");
+					uiParam.setName(uiParam.getName()+"End");
+					searchList.add(uiParam);
+				}else{
+					UIParam uiParam=new UIParam();
+					BeanUtils.copyProperties(uiParam, param);
+					uiParam.setTag(uiParam.getType());
+					searchList.add(uiParam);
+				}
 			}
 			if (param.getTableShow()) {
 				UIParam uiParam=new UIParam();
