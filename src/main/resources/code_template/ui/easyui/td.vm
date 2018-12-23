@@ -1,1 +1,1 @@
-<th data-options="halign:'center',align:'left'" field="${name}" th:text="${labelMessage}"></th>
+<th data-options="halign:'center',align:'left'" field="${name}">${label}</th>

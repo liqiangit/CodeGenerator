@@ -1,34 +1,3 @@
-/*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package com.liqiangit.cg.swing;
 
 import java.awt.BorderLayout;
@@ -36,16 +5,16 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.DefaultCellEditor;
@@ -53,20 +22,16 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-
-/*
- * TableSortDemo.java requires no other files.
- */
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -95,6 +60,8 @@ import com.liqiangit.cg.model.UIParams;
 //https://blog.csdn.net/yaerfeng/article/details/7255204
 //浅析JTable与TableModel、TableCellRenderer、TableCellEditor接口——使用JComboBox显示单元格的值 
 //https://www.cnblogs.com/langtianya/archive/2012/09/04/2671173.html
+//JTable中 表头中添加 JCheckBox 全选 反向选择 功能
+//https://blog.csdn.net/ygzk123/article/details/7778095
 /**
  * 
  * @author 李强
@@ -106,7 +73,12 @@ public class GenUI extends JPanel {
 	private static final long serialVersionUID = 1L;
 	DefaultTableModel tableM;
 	/**
-	 * 实体
+	 * 类名
+	 */
+	JLabel classLabel;
+	JTextField classTextField;
+	/**
+	 * 命名空间
 	 */
 	JLabel entityLabel;
 	JTextField entityTextField;
@@ -149,10 +121,11 @@ public class GenUI extends JPanel {
 	 */
 	JButton exportButton;
 	JFileChooser fc;
+	JFileChooser directoryFc;
 
-	Vector typeItem = new Vector<Item>();
-	Vector validatorRuleItem = new Vector<Item>();
-	Vector searchTypeItem = new Vector<Item>();
+	Vector<Item> typeItem = new Vector<Item>();
+	Vector<Item> validatorRuleItem = new Vector<Item>();
+	Vector<Item> searchTypeItem = new Vector<Item>();
 
 	public GenUI() {
 		super(new BorderLayout());
@@ -162,15 +135,41 @@ public class GenUI extends JPanel {
 	}
 
 	private void initData() {
-		typeItem.add(new Item("text", "文本框"));
-		typeItem.add(new Item("combobox", "下拉框"));
+		loadItem(typeItem, "typeItem");
+//		loadItem(searchTypeItem, "searchTypeItem");
+		loadItem(validatorRuleItem, "validatorRuleItem");
+		// typeItem.add(new Item("text", "文本框"));
+		// typeItem.add(new Item("combobox", "下拉框"));
+		//
+		 searchTypeItem.add(new Item("0", "普通查询"));
+		 searchTypeItem.add(new Item("1", "范围查询"));
+		//
+		// validatorRuleItem.add(new Item("email", "邮箱"));
+		// validatorRuleItem.add(new Item("mobile", "手机号"));
+		// validatorRuleItem.add(new Item("number", "数字"));
+	}
 
-		searchTypeItem.add(new Item("0", "普通查询"));
-		searchTypeItem.add(new Item("1", "范围查询"));
-
-		validatorRuleItem.add(new Item("email", "邮箱"));
-		validatorRuleItem.add(new Item("mobile", "手机号"));
-		validatorRuleItem.add(new Item("number", "数字"));
+	private void loadItem(Vector<Item> items, String typeItem) {
+		// 此处要保证加载顺序
+		Properties pro = new OrderedProperties();
+		String filePath = "config/" + typeItem + "_zh_CN.properties";
+		try {
+			InputStream in = GenUI.class.getClassLoader().getResourceAsStream(filePath);
+			pro.load(in);
+			in.close();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(GenUI.this, filePath + "不存在！");
+			e.printStackTrace();
+		}
+		for (Object key : pro.keySet()) {
+			items.add(new Item(String.valueOf(key), pro.getProperty(String.valueOf(key))));
+		}
+		/**
+		 * ResourceBundle bundle = ResourceBundle.getBundle("config/" +
+		 * typeItem); for (String key : bundle.keySet()) {
+		 * System.out.println(key); items.add(new Item(key,
+		 * bundle.getString(key))); }
+		 */
 	}
 
 	private void initUI() {
@@ -182,21 +181,21 @@ public class GenUI extends JPanel {
 		// 初始化表格模型，设置表头和数据
 		tableM = new MyDefaultTableModel(null, name);
 		table = new JTable(tableM);
-
+		table.getTableHeader().setDefaultRenderer(new CheckHeaderCellRenderer(table));
 		initData();
 		{
 			// 控件类型
-			JComboBox JComboBoxItem = new JComboBox(typeItem);
+			JComboBox<Item> JComboBoxItem = new JComboBox<Item>(typeItem);
 			TableColumn brandColumn = table.getColumnModel().getColumn(4);
 			brandColumn.setCellEditor(new DefaultCellEditor(JComboBoxItem));
 		}
 		{
-			JComboBox JComboBoxItem = new JComboBox(searchTypeItem);
+			JComboBox<Item> JComboBoxItem = new JComboBox<Item>(searchTypeItem);
 			TableColumn brandColumn = table.getColumnModel().getColumn(10);
 			brandColumn.setCellEditor(new DefaultCellEditor(JComboBoxItem));
 		}
 		{
-			JComboBox JComboBoxItem = new JComboBox(validatorRuleItem);
+			JComboBox<Item> JComboBoxItem = new JComboBox<Item>(validatorRuleItem);
 			TableColumn brandColumn = table.getColumnModel().getColumn(11);
 			brandColumn.setCellEditor(new DefaultCellEditor(JComboBoxItem));
 		}
@@ -246,9 +245,13 @@ public class GenUI extends JPanel {
 		table.setFillsViewportHeight(true);
 		table.setAutoCreateRowSorter(true);
 
-		entityLabel = new JLabel("类名");
+		classLabel = new JLabel("类名");
+		classTextField = new JTextField();
+		classTextField.setText(Person.class.getName());
+
+		entityLabel = new JLabel("命名空间");
 		entityTextField = new JTextField();
-		entityTextField.setText(Person.class.getName());
+		entityTextField.setText("person");
 
 		formColumnsLabel = new JLabel("表单列数");
 		formColumnsTextField = new JTextField();
@@ -261,42 +264,18 @@ public class GenUI extends JPanel {
 		searchColumnsLabel = new JLabel("查询框列数");
 		searchColumnsTextField = new JTextField();
 		searchColumnsTextField.setText("4");
+		FileSystemView fsv = FileSystemView.getFileSystemView(); // 注意了，这里重要的一句
 		fc = new JFileChooser();
+		fc.setCurrentDirectory(fsv.getHomeDirectory());// 得到桌面路径
+		directoryFc = new JFileChooser();
+		directoryFc.setCurrentDirectory(fsv.getHomeDirectory()); // 得到桌面路径
+		directoryFc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		directoryFc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		loadFieldsButton = new JButton("加载字段");
 		clearListButton = new JButton("清空列表");
 		generateButton = new JButton("生成HTML代码");
 		importButton = new JButton("导入");
 		exportButton = new JButton("导出");
-	}
-
-	private void initLayout2() {
-		JScrollPane scrollPane = new JScrollPane(table);
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new GridLayout(4, 2));
-		leftPanel.add(entityLabel);
-		leftPanel.add(entityTextField);
-
-		leftPanel.add(formColumnsLabel);
-		leftPanel.add(formColumnsTextField);
-
-		leftPanel.add(detailColumnsLabel);
-		leftPanel.add(detailColumnsTextField);
-
-		leftPanel.add(searchColumnsLabel);
-		leftPanel.add(searchColumnsTextField);
-
-		JPanel rightPanel = new JPanel();
-		splitPane.setLeftComponent(leftPanel);
-		splitPane.setRightComponent(rightPanel);
-		splitPane.setDividerLocation(300);
-		rightPanel.add(loadFieldsButton);
-		rightPanel.add(clearListButton);
-		rightPanel.add(generateButton);
-		rightPanel.add(importButton);
-		rightPanel.add(exportButton);
-		add(splitPane, BorderLayout.NORTH);
-		add(scrollPane, BorderLayout.CENTER);
 	}
 
 	JPanel leftPanel = new JPanel();
@@ -312,18 +291,21 @@ public class GenUI extends JPanel {
 		rightPanel.add(exportButton);
 
 		leftPanel.setLayout(gridBagLayout);
-		addUI(entityLabel, 1, 1);
-		addUI(entityTextField, 2, 1);
+		addUI(classLabel, 1, 1);
+		addUI(classTextField, 2, 1);
 		addUI(rightPanel, 3, 1);
 
-		addUI(formColumnsLabel, 1, 2);
-		addUI(formColumnsTextField, 2, 2);
+		addUI(entityLabel, 1, 2);
+		addUI(entityTextField, 2, 2);
 
-		addUI(detailColumnsLabel, 1, 3);
-		addUI(detailColumnsTextField, 2, 3);
+		addUI(formColumnsLabel, 1, 3);
+		addUI(formColumnsTextField, 2, 3);
 
-		addUI(searchColumnsLabel, 1, 4);
-		addUI(searchColumnsTextField, 2, 4);
+		addUI(detailColumnsLabel, 1, 4);
+		addUI(detailColumnsTextField, 2, 4);
+
+		addUI(searchColumnsLabel, 1, 5);
+		addUI(searchColumnsTextField, 2, 5);
 
 		add(leftPanel, BorderLayout.NORTH);
 		add(scrollPane, BorderLayout.CENTER);
@@ -355,35 +337,43 @@ public class GenUI extends JPanel {
 				new Thread(new Runnable() {
 
 					public void run() {
-						String clazz = entityTextField.getText();
+						String clazz = classTextField.getText();
+						Class<?> class1 = null;
 						try {
-							UIParams uiParams=getdata();
-							List<UIParam> params=uiParams.getUiParams();
-							Map<String,String> map=new HashMap<String,String>();
-							for (UIParam uiParam : params) {
-								map.put(uiParam.getName(), null);
-							}
-							List<Field> fields = ReflectionUtil.getFields(Class.forName(clazz));
-							int i = 0;
-							for (Field field : fields) {
-								String name=field.getName();
-								if(map.containsKey(name)){
-									continue;
-								}
-								Comment comment=field.getAnnotation(Comment.class);
-								String label="字段备注" + i;
-								if(comment!=null){
-									label=comment.comment();
-								}
-								i++;
-								Object[] data = { "" + i, name, label, "国际化" + i, "text", "",
-										new Boolean(false), new Boolean(false), new Boolean(false), new Boolean(false),
-										"0", "", new Boolean(false), "", new Boolean(false) };
-								tableM.addRow(render(data));
-							}
+							class1 = Class.forName(clazz);
 						} catch (ClassNotFoundException e) {
+							JOptionPane.showMessageDialog(GenUI.this,
+									"java.lang.ClassNotFoundException: " + e.getMessage());
 							e.printStackTrace();
 						}
+						if (class1 == null) {
+							return;
+						}
+						UIParams uiParams = getdata();
+						List<UIParam> params = uiParams.getUiParams();
+						Map<String, String> map = new HashMap<String, String>();
+						for (UIParam uiParam : params) {
+							map.put(uiParam.getName(), null);
+						}
+						List<Field> fields = ReflectionUtil.getFields(class1);
+						int i = 0;
+						for (Field field : fields) {
+							String name = field.getName();
+							if (map.containsKey(name)) {
+								continue;
+							}
+							Comment comment = field.getAnnotation(Comment.class);
+							String label = "字段备注" + i;
+							if (comment != null) {
+								label = comment.comment();
+							}
+							i++;
+							Object[] data = { "" + i, name, label, "国际化" + i, "text", "", new Boolean(false),
+									new Boolean(false), new Boolean(false), new Boolean(false), "0", "",
+									new Boolean(false), "", new Boolean(false) };
+							tableM.addRow(render(data));
+						}
+
 					}
 				}).start();
 			}
@@ -409,7 +399,27 @@ public class GenUI extends JPanel {
 
 					public void run() {
 						UIParams params = getdata();
-						generate(params);
+						try {
+							UIFile uiFile = generate(params);
+							int returnVal = directoryFc.showOpenDialog(GenUI.this);
+							if (returnVal == JFileChooser.APPROVE_OPTION) {
+								File file = directoryFc.getSelectedFile();
+								try {
+									FileUtils.writeStringToFile(new File(file, params.getEntity() + "List.html"),
+											uiFile.getListPanel().toString(), "GB2312", false);
+									FileUtils.writeStringToFile(new File(file, params.getEntity() + "Form.html"),
+											uiFile.getFormPanel().toString(), "GB2312", false);
+									FileUtils.writeStringToFile(new File(file, params.getEntity() + "Detail.html"),
+											uiFile.getDetailPanel().toString(), "GB2312", false);
+									JOptionPane.showMessageDialog(GenUI.this, String.format("生成了三个文件%s,%s,%s", params.getEntity() + "List.html",params.getEntity() + "Form.html",params.getEntity() + "Detail.html"));
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(GenUI.this, "系统异常" + e.getMessage());
+							e.printStackTrace();
+						}
 					}
 
 				}).start();
@@ -431,21 +441,25 @@ public class GenUI extends JPanel {
 								String str = FileUtils.readFileToString(file, "GB2312");
 								UIParams params = JSON.parseObject(str, UIParams.class);
 								entityTextField.setText(params.getEntity());
-								formColumnsTextField.setText(params.getFormColumns()+"");
-								detailColumnsTextField.setText(params.getDetailColumns()+"");
-								searchColumnsTextField.setText(params.getSearchColumns()+"");
-								
-								List<UIParam> uiParams=params.getUiParams();
-								int i=0;
+								formColumnsTextField.setText(params.getFormColumns() + "");
+								detailColumnsTextField.setText(params.getDetailColumns() + "");
+								searchColumnsTextField.setText(params.getSearchColumns() + "");
+
+								List<UIParam> uiParams = params.getUiParams();
+								int i = 0;
 								for (UIParam uiParam : uiParams) {
 									i++;
-									Object[] data = { "" + i, uiParam.getName(), uiParam.getLabel(), uiParam.getLabelMessage(), uiParam.getType(), uiParam.getUrl(),
-											uiParam.getFormShow(), uiParam.getTableShow(), uiParam.getSearchShow(), uiParam.getDetailShow(),
-											uiParam.getSearchType(), uiParam.getValidatorRule(), uiParam.getRequired(), uiParam.getLength(), uiParam.getIsPk() };
+									Object[] data = { "" + i, uiParam.getName(), uiParam.getLabel(),
+											uiParam.getLabelMessage(), uiParam.getType(), uiParam.getUrl(),
+											uiParam.getFormShow(), uiParam.getTableShow(), uiParam.getSearchShow(),
+											uiParam.getDetailShow(), uiParam.getSearchType(),
+											uiParam.getValidatorRule(), uiParam.getRequired(), uiParam.getLength(),
+											uiParam.getIsPk() };
 									tableM.addRow(render(data));
 								}
-								
-							} catch (IOException e) {
+
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(GenUI.this, file.getAbsolutePath() + "加载失败！");
 								e.printStackTrace();
 							}
 						}
@@ -477,22 +491,21 @@ public class GenUI extends JPanel {
 			}
 		});
 	}
+
 	private void clearTable() {
 		int row = tableM.getRowCount() - 1;
 		for (int i = row; i >= 0; i--) {
 			tableM.removeRow(i);
 		}
 	}
-	public static void generate(UIParams params) {
-		try {
-			UIPanel uiPanel = UIUtils.convert(params);
-			EasyuiUIcg easyuiUIcg = new EasyuiUIcg();
-			UIFile uiFile = easyuiUIcg.generate(uiPanel);
-			System.out.println(uiFile.getSearchPanel());
-			System.out.println(uiFile.getTablePanel());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+	public static UIFile generate(UIParams params) throws Exception {
+		UIPanel uiPanel = UIUtils.convert(params);
+		EasyuiUIcg easyuiUIcg = new EasyuiUIcg();
+		UIFile uiFile = easyuiUIcg.generate(uiPanel);
+		System.out.println(uiFile.getSearchPanel());
+		System.out.println(uiFile.getTablePanel());
+		return uiFile;
 	}
 
 	/**
@@ -557,15 +570,15 @@ public class GenUI extends JPanel {
 				}
 				Object value = table.getValueAt(i, j);
 				// System.out.print(value + ",");
-				String var=String.valueOf(value);
-				if(j==4){
-					var=getKey(typeItem, var);
+				String var = String.valueOf(value);
+				if (j == 4) {
+					var = getKey(typeItem, var);
 				}
-				if(j==10){
-					var=getKey(searchTypeItem, var);
+				if (j == 10) {
+					var = getKey(searchTypeItem, var);
 				}
-				if(j==11){
-					var=getKey(validatorRuleItem, var);
+				if (j == 11) {
+					var = getKey(validatorRuleItem, var);
 				}
 				values[i][j] = var;
 			}

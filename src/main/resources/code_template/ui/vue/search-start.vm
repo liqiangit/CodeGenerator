@@ -1,3 +1,0 @@
-				<div data-options="region:'north',border:false" class="formserach" style="padding: 10px; overflow: hidden;" align="left">
-					<form id="manage_employee_searchform" onsubmit="return false">
-							<table class="tableForm edit" width="100%">

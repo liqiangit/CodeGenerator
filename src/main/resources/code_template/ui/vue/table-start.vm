@@ -1,5 +1,0 @@
-				<div data-options="region:'center',border:false">
-			    	<table id="manage_${entity}_datagrid" class="easyui-datagrid" striped="true" toolbar="#manage_${entity}_toolbar" rownumbers="true" fitColumns="true" 
-			    		fit="true" border="false" pagination="true" idField="id" pageSize="20" pageList="[ 10, 20, 30, 40, 50 ]" singleSelect="false">
-						<thead>
-							<tr>

@@ -1,4 +1,4 @@
-package com.liqiangit.cg.swing;
+package com.liqiangit.cg.swing.demo;
 import java.awt.*;
 import java.util.*;
 import java.applet.Applet;

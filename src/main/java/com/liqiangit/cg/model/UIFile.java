@@ -1,7 +1,20 @@
 package com.liqiangit.cg.model;
 
 public class UIFile {
+	private Panel listPanel;
 	private Panel searchPanel;
+	private Panel tablePanel;
+	private Panel formPanel;
+	private Panel detailPanel;
+
+	public Panel getListPanel() {
+		return listPanel;
+	}
+
+	public void setListPanel(Panel listPanel) {
+		this.listPanel = listPanel;
+	}
+
 	public Panel getSearchPanel() {
 		return searchPanel;
 	}
@@ -9,10 +22,6 @@ public class UIFile {
 	public void setSearchPanel(Panel searchPanel) {
 		this.searchPanel = searchPanel;
 	}
-
-	private Panel tablePanel;
-	private Panel formPanel;
-	private Panel detailPanel;
 
 	public Panel getTablePanel() {
 		return tablePanel;

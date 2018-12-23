@@ -25,5 +25,9 @@ public class MyDefaultTableModel extends DefaultTableModel {
 	public Object getValueAt(int row, int column) {
 		return super.getValueAt(row, column);
 	}
-
+    public void selectAllOrNull(boolean value,int column) {
+        for (int i = 0; i < getRowCount(); i++) {
+            this.setValueAt(value, i, column);
+        }
+    }
 }

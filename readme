@@ -1,0 +1,9 @@
+页面自动生成器
+运行GenUI.java
+默认适配jqueryeasyui
+可根据需要扩展，见EasyuiUIcg
+code_template 目录为控件模板，基于velocity模板引擎
+自定义类型扩展见
+typeItem_zh_CN.properties
+校验规则扩展见
+validatorRuleItem_zh_CN.properties

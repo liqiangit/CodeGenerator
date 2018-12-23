@@ -1,1 +1,0 @@
-								<th data-options="halign:'center',align:'left'" field="_operate"  		width="15%" formatter="$employee.formatter.operater" th:text="#{vip_people_employee_list_operation}"></th>

@@ -1,2 +1,0 @@
-							<a class="easyui-linkbutton" iconCls="icon-search" plian="false" resId="109104101" style="display:none1"
-								href="javascript:$${entity}.searchData();" th:text="#{vip_people_${entity}_list_search}"></a>

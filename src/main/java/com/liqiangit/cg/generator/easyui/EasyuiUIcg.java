@@ -41,26 +41,24 @@ public class EasyuiUIcg implements UIcg {
 			List<UIParam> formList = uiPanel.getFormList();
 			Integer formColumns = uiPanel.getFormColumns();
 			Panel table = getForm(uiPanel, formList, formColumns,"form");
-//			String formStr = table.toString();
-//			uiFile.setFormStr(formStr);
 			uiFile.setFormPanel(table);
 		}
 		{
 			List<UIParam> formList = uiPanel.getSearchList();
 			Integer formColumns = uiPanel.getSearchColumns();
 			Panel table = getForm(uiPanel, formList, formColumns,"search");
-//			String formStr = table.toString();
-//			uiFile.setFormStr(formStr);
 			uiFile.setSearchPanel(table);
 		}
 		{
 			List<UIParam> formList = uiPanel.getDetailList();
 			Integer formColumns = uiPanel.getDetailColumns();
 			Panel table = getForm(uiPanel, formList, formColumns,"detail");
-//			String formStr = table.toString();
-//			uiFile.setFormStr(formStr);
 			uiFile.setDetailPanel(table);
 		}
+		Panel listPanel=new Panel();
+		listPanel.addChild(uiFile.getSearchPanel());
+		listPanel.addChild(uiFile.getTablePanel());
+		uiFile.setListPanel(listPanel);
 		return uiFile;
 	}
 
@@ -139,7 +137,7 @@ public class EasyuiUIcg implements UIcg {
 		if(uiPanel.getPk()!=null){
 			map.put("pk", uiPanel.getPk().getName());
 		}
-		String templePath = String.format("code_template/ui/vue/%s.vm", uiParam.getTag());
+		String templePath = String.format("code_template/ui/easyui/%s.vm", uiParam.getTag());
 		String ui = TextUtil.velocityMerge(templePath, map);
 		return ui;
 	}

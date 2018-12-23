@@ -1,5 +1,0 @@
-<div align="center" class="cw-falcon">
-	<form id="manage_${entity}_editform" th:action="@{/people/${entity}/save}" th:object="${${entity}}" method="post">
-		<input type="hidden" name="action" 		th:attr="value=${action}" />
-		<input type="hidden" name="${pk}" 			th:field="*{${pk}}"/>
-		<table class="tableForm edit" width="100%">
