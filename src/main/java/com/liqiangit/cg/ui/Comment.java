@@ -1,4 +1,4 @@
-package com.liqiangit.cg.generator;
+package com.liqiangit.cg.ui;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;

@@ -4,9 +4,9 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
-public class CheckTableModle extends DefaultTableModel {
+public class MyCheckTableModle extends DefaultTableModel {
 
-    public CheckTableModle(Vector data, Vector columnNames) {
+    public MyCheckTableModle(Vector data, Vector columnNames) {
         super(data, columnNames);
     }
 

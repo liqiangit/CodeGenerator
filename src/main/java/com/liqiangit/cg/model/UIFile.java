@@ -1,5 +1,7 @@
 package com.liqiangit.cg.model;
 
+import com.liqiangit.cg.ui.Panel;
+
 public class UIFile {
 	private Panel listPanel;
 	private Panel searchPanel;

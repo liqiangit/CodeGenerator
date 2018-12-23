@@ -14,7 +14,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 public class CheckHeaderCellRenderer implements TableCellRenderer {
-	MyDefaultTableModel tableModel;
+	CheckTableModle tableModel;
 	JTableHeader tableHeader;
 	final JCheckBox formShowBox;
 	final JCheckBox tableShowBox;
@@ -23,7 +23,7 @@ public class CheckHeaderCellRenderer implements TableCellRenderer {
 	final JCheckBox requiredBox;
 
 	public CheckHeaderCellRenderer(JTable table) {
-		this.tableModel = (MyDefaultTableModel) table.getModel();
+		this.tableModel = (CheckTableModle) table.getModel();
 		this.tableHeader = table.getTableHeader();
 		formShowBox = new JCheckBox(tableModel.getColumnName(6));
 		formShowBox.setSelected(false);

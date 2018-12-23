@@ -3,7 +3,7 @@ package com.liqiangit.cg.swing;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
-public class MyDefaultTableModel extends DefaultTableModel {
+public class CheckTableModle extends DefaultTableModel {
 	Class[] typeArray = { Object.class, Object.class, Object.class, Object.class, Object.class, Object.class,
 			Boolean.class, Boolean.class, Boolean.class, Boolean.class, Object.class, JComboBox.class, Boolean.class,
 			Object.class, Boolean.class };
@@ -11,7 +11,7 @@ public class MyDefaultTableModel extends DefaultTableModel {
 	// "序号", "字段名称", "字段备注", "国际化", "控件类型", "字典", "表单显示", "列表显示", "查询显示",
 	// "详情显示", "查询方式", "校验规则",
 	// "必填", "长度", "是否主键"
-	public MyDefaultTableModel(Object[][] data, Object[] columnNames) {
+	public CheckTableModle(Object[][] data, Object[] columnNames) {
 		super(data, columnNames);
 	}
 

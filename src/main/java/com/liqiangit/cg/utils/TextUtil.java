@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.liqiangit.cg;
+package com.liqiangit.cg.utils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 处理文本
  *
- * @author John.Lee
+ * @author 李强
  */
 public class TextUtil {
   private static final Logger logger = LoggerFactory.getLogger(TextUtil.class);
@@ -31,7 +31,7 @@ public class TextUtil {
    * 驼峰转下划线
    *
    * @Description
-   * @author John.Lee
+   * @author 李强
    * @param str
    * @return
    */
@@ -50,7 +50,7 @@ public class TextUtil {
    * 下划线转驼峰
    *
    * @Description
-   * @author John.Lee
+   * @author 李强
    * @param str
    * @return
    */

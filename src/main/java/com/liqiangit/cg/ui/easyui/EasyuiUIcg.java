@@ -1,16 +1,17 @@
-package com.liqiangit.cg.generator.easyui;
+package com.liqiangit.cg.ui.easyui;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.liqiangit.cg.TextUtil;
-import com.liqiangit.cg.generator.UIcg;
-import com.liqiangit.cg.model.Panel;
 import com.liqiangit.cg.model.UIFile;
 import com.liqiangit.cg.model.UIPanel;
 import com.liqiangit.cg.model.UIParam;
+import com.liqiangit.cg.ui.Panel;
+import com.liqiangit.cg.ui.Tr;
+import com.liqiangit.cg.ui.UIcg;
+import com.liqiangit.cg.utils.TextUtil;
 
 //转不了
 //Map<String, Object> map=new HashMap<String, Object>();

@@ -1,4 +1,4 @@
-package com.liqiangit.cg.model;
+package com.liqiangit.cg.ui;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -39,14 +39,14 @@ import org.apache.commons.io.FileUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.liqiangit.cg.Person;
-import com.liqiangit.cg.ReflectionUtil;
-import com.liqiangit.cg.UIUtils;
-import com.liqiangit.cg.generator.Comment;
-import com.liqiangit.cg.generator.easyui.EasyuiUIcg;
 import com.liqiangit.cg.model.UIFile;
 import com.liqiangit.cg.model.UIPanel;
 import com.liqiangit.cg.model.UIParam;
 import com.liqiangit.cg.model.UIParams;
+import com.liqiangit.cg.ui.Comment;
+import com.liqiangit.cg.ui.easyui.EasyuiUIcg;
+import com.liqiangit.cg.utils.ReflectionUtil;
+import com.liqiangit.cg.utils.UIUtils;
 
 //Java-Reflection反射-获取包括父类在内的所有字段
 //https://blog.csdn.net/qq_32452623/article/details/54025185
@@ -179,7 +179,7 @@ public class GenUI extends JPanel {
 		String[] name = { "序号", "字段名称", "字段备注", "国际化", "控件类型", "字典", "表单显示", "列表显示", "查询显示", "详情显示", "查询方式", "校验规则",
 				"必填", "长度", "是否主键" };
 		// 初始化表格模型，设置表头和数据
-		tableM = new MyDefaultTableModel(null, name);
+		tableM = new CheckTableModle(null, name);
 		table = new JTable(tableM);
 		table.getTableHeader().setDefaultRenderer(new CheckHeaderCellRenderer(table));
 		initData();
@@ -202,44 +202,38 @@ public class GenUI extends JPanel {
 		{
 			// 表单显示
 			JCheckBox jCheckBox = new JCheckBox();
-			// jCheckBox.setText("");
-			TableColumn brandColumn2 = table.getColumnModel().getColumn(6);
-			brandColumn2.setCellEditor(new DefaultCellEditor(jCheckBox));
+			TableColumn brandColumn = table.getColumnModel().getColumn(6);
+			brandColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
 		}
 		{
 			// 列表显示
 			JCheckBox jCheckBox = new JCheckBox();
-			// jCheckBox.setText("");
-			TableColumn brandColumn2 = table.getColumnModel().getColumn(7);
-			brandColumn2.setCellEditor(new DefaultCellEditor(jCheckBox));
+			TableColumn brandColumn = table.getColumnModel().getColumn(7);
+			brandColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
 		}
 		{
 			// 查询显示
 			JCheckBox jCheckBox = new JCheckBox();
-			// jCheckBox.setText("");
-			TableColumn brandColumn2 = table.getColumnModel().getColumn(8);
-			brandColumn2.setCellEditor(new DefaultCellEditor(jCheckBox));
+			TableColumn brandColumn = table.getColumnModel().getColumn(8);
+			brandColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
 		}
 		{
 			// 详情显示
 			JCheckBox jCheckBox = new JCheckBox();
-			// jCheckBox.setText("");
-			TableColumn brandColumn2 = table.getColumnModel().getColumn(9);
-			brandColumn2.setCellEditor(new DefaultCellEditor(jCheckBox));
+			TableColumn brandColumn = table.getColumnModel().getColumn(9);
+			brandColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
 		}
 		{
 			// 必填
 			JCheckBox jCheckBox = new JCheckBox();
-			// jCheckBox.setText("");
-			TableColumn brandColumn2 = table.getColumnModel().getColumn(12);
-			brandColumn2.setCellEditor(new DefaultCellEditor(jCheckBox));
+			TableColumn brandColumn = table.getColumnModel().getColumn(12);
+			brandColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
 		}
 		{
 			// 是否主键
 			JCheckBox jCheckBox = new JCheckBox();
-			// jCheckBox.setText("");
-			TableColumn brandColumn2 = table.getColumnModel().getColumn(14);
-			brandColumn2.setCellEditor(new DefaultCellEditor(jCheckBox));
+			TableColumn brandColumn = table.getColumnModel().getColumn(14);
+			brandColumn.setCellEditor(new DefaultCellEditor(jCheckBox));
 		}
 		table.setPreferredScrollableViewportSize(new Dimension(500, 170));
 		table.setFillsViewportHeight(true);
@@ -559,17 +553,7 @@ public class GenUI extends JPanel {
 		String[][] values = new String[rowCount][columnCount];
 		for (int i = 0; i < rowCount; i++) {
 			for (int j = 0; j < columnCount; j++) {
-				Component component = table.getComponentAt(i, j);
-				// table.getCellEditor().getTableCellEditorComponent(table,
-				// value, isSelected, row, column)
-				if (component instanceof JComboBox) {
-					System.err.println();
-				}
-				if (j == 11) {
-					// System.err.println(component.getClass().getName());
-				}
 				Object value = table.getValueAt(i, j);
-				// System.out.print(value + ",");
 				String var = String.valueOf(value);
 				if (j == 4) {
 					var = getKey(typeItem, var);

@@ -1,6 +1,4 @@
-package com.liqiangit.cg.generator.easyui;
-
-import com.liqiangit.cg.model.Panel;
+package com.liqiangit.cg.ui;
 
 public class Tr extends Panel{
 

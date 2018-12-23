@@ -59,7 +59,7 @@ public class TestFrame extends JFrame {
         headerNames.add("姓名");
         headerNames.add("年龄");
         Vector data=this.getData();
-        CheckTableModle tableModel=new CheckTableModle(data,headerNames);
+        MyCheckTableModle tableModel=new MyCheckTableModle(data,headerNames);
         table.setModel(tableModel);
         table.getTableHeader().setDefaultRenderer(new MyCheckHeaderCellRenderer(table));
     }

@@ -1,9 +1,11 @@
-package com.liqiangit.cg;
+package com.liqiangit.cg.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.liqiangit.cg.Person;
 
 public class ReflectionUtil {
 	public static List<Field> getFields(Class tempClass) {

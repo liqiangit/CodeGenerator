@@ -3,12 +3,12 @@ package com.liqiangit.cg.swing;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.liqiangit.cg.UIUtils;
-import com.liqiangit.cg.generator.easyui.EasyuiUIcg;
 import com.liqiangit.cg.model.UIFile;
 import com.liqiangit.cg.model.UIPanel;
 import com.liqiangit.cg.model.UIParam;
 import com.liqiangit.cg.model.UIParams;
+import com.liqiangit.cg.ui.easyui.EasyuiUIcg;
+import com.liqiangit.cg.utils.UIUtils;
 
 public class Main {
 	public static void main(String[] args) throws Exception {

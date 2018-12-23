@@ -5,7 +5,7 @@ package com.liqiangit.cg;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.liqiangit.cg.generator.Comment;
+import com.liqiangit.cg.ui.Comment;
 
 public class Person implements Serializable{
 

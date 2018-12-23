@@ -1,4 +1,4 @@
-package com.liqiangit.cg.generator;
+package com.liqiangit.cg.ui;
 
 import com.liqiangit.cg.model.UIFile;
 import com.liqiangit.cg.model.UIPanel;

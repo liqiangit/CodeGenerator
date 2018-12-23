@@ -14,12 +14,12 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
 public class MyCheckHeaderCellRenderer implements TableCellRenderer {
-    CheckTableModle tableModel;
+    MyCheckTableModle tableModel;
     JTableHeader tableHeader;
     final JCheckBox selectBox;
 
     public MyCheckHeaderCellRenderer(JTable table) {
-        this.tableModel = (CheckTableModle)table.getModel();
+        this.tableModel = (MyCheckTableModle)table.getModel();
         this.tableHeader = table.getTableHeader();
         selectBox = new JCheckBox(tableModel.getColumnName(0));
         selectBox.setSelected(false);
