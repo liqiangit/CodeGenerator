@@ -19,16 +19,19 @@ public class Person implements Serializable{
 	 * PERSON_ID
 	 * 客户id   主键
 	 */
+	@Comment(comment="客户id")
 	private String personId;
 	/**
 	 * LEGAL_ORG_CODE
 	 * 机构代码(全路径)
 	 */
+	@Comment(comment="机构代码")
 	private String legalOrgCode;
 	/**
 	 * CUSTOMER_ID
 	 * 核心客户号(编码)
 	 */
+	@Comment(comment="编码")
 	private String customerId;
 	/**
 	 * CTFTYPE
@@ -40,101 +43,114 @@ public class Person implements Serializable{
 	 * CTFNO
 	 * 证件号码
 	 */
+	@Comment(comment="证件号码")
 	private String ctfno;
 
 	/**
 	 * CTFNAME
 	 * 证件名称
 	 */
-	private String ctfname;
+//	@Comment(comment="证件名称")
+//	private String ctfname;
 
 	/**
 	 * ORG_NAME
 	 * 机构名称
 	 */
+	@Comment(comment="机构名称")
 	private String orgName;
 
 	/**
 	 * PROPERTY
 	 * 客户属性
 	 */
+	@Comment(comment="客户属性")
 	private String property;
 
 	/**
 	 * STATUS
 	 * 客户状态 1正常0失效
 	 */
+	@Comment(comment="客户状态")
 	private Integer status;
 	/**
 	 * REMARK
 	 * 备注
 	 */
+	@Comment(comment="备注")
 	private String remark;
 	/**
 	 * CREATOR
 	 * 创建人
 	 */
-	private String creator;
+//	private String creator;
 	/**
 	 * CREATE_TIME
 	 * 创建时间
 	 */
-	private Date createTime;
+//	private Date createTime;
 	/**
 	 * UPDATOR
 	 * 最后修改人
 	 */
-	private String updator;
+//	private String updator;
 	/**
 	 * UPDATE_TIME
 	 * 最后修改时间
 	 */
-	private Date updateTime;
+//	private Date updateTime;
 
 	/**
 	 * 分区ID
 	 */
-	private Integer partitionId;
+//	private Integer partitionId;
 	/**
 	 * DEPT_CODE
 	 * 部门代码
 	 */
+	@Comment(comment="部门代码")
 	private String deptCode;
 
 	/**
 	 * POSITION
 	 * 职位
 	 */
+	@Comment(comment="职位")
 	private String position;
 
 	/**
 	 * USER_LEVEL
 	 * 用户或客户级别　1代表一级　２代表二级依次类推
 	 */
+	@Comment(comment="客户级别")
 	private Integer userLevel;
 
 	/**
 	 * GENDER
 	 * 性别
 	 */
+	@Comment(comment="性别")
 	private Integer gender;
 
 	/**
 	 * BIRTHDAY
 	 * 出生日期
 	 */
+	@Comment(comment="出生日期")
 	private Date birthday;
 
 	/**
 	 * EMAIL
 	 * 邮箱
 	 */
+	@Comment(comment="邮箱")
 	private String email;
 
 	/**
 	 * TELEPHONE
 	 * 联系电话
 	 */
+	@Comment(comment="联系电话")
 	private String telephone;
 	/*************冗余特征信息****************/
 
@@ -178,14 +194,6 @@ public class Person implements Serializable{
 		this.ctfno = ctfno;
 	}
 
-	public String getCtfname() {
-		return ctfname;
-	}
-
-	public void setCtfname(String ctfname) {
-		this.ctfname = ctfname;
-	}
-
 	public String getOrgName() {
 		return orgName;
 	}
@@ -216,46 +224,6 @@ public class Person implements Serializable{
 
 	public void setRemark(String remark) {
 		this.remark = remark;
-	}
-
-	public String getCreator() {
-		return creator;
-	}
-
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public String getUpdator() {
-		return updator;
-	}
-
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-
-	public Integer getPartitionId() {
-		return partitionId;
-	}
-
-	public void setPartitionId(Integer partitionId) {
-		this.partitionId = partitionId;
 	}
 
 	public String getDeptCode() {

@@ -3,8 +3,12 @@ package com.liqiangit.cg.swing;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -32,7 +36,6 @@ import javax.swing.JTextField;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.commons.io.FileUtils;
@@ -72,7 +75,12 @@ public class GenUI extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	DefaultTableModel tableM;
+	Vector<Item> typeItem = new Vector<Item>();
+	Vector<Item> validatorRuleItem = new Vector<Item>();
+	Vector<Item> searchTypeItem = new Vector<Item>();
+	CheckTableModle tableM;
+	JTable table;
+	JPanel northPanel = new JPanel();
 	/**
 	 * 类名
 	 */
@@ -100,19 +108,18 @@ public class GenUI extends JPanel {
 	 */
 	JLabel searchColumnsLabel;
 	JTextField searchColumnsTextField;
-	JTable table;
 	/**
-	 * 清空列表
+	 * 加载字段
 	 */
-	JButton clearListButton;
+	JButton loadFieldsButton;
 	/**
 	 * 生成HTML代码
 	 */
 	JButton generateButton;
 	/**
-	 * 加载字段
+	 * 清空列表
 	 */
-	JButton loadFieldsButton;
+	JButton clearListButton;
 	/**
 	 * 导入数据
 	 */
@@ -124,10 +131,6 @@ public class GenUI extends JPanel {
 	JFileChooser fc;
 	JFileChooser directoryFc;
 
-	Vector<Item> typeItem = new Vector<Item>();
-	Vector<Item> validatorRuleItem = new Vector<Item>();
-	Vector<Item> searchTypeItem = new Vector<Item>();
-
 	public GenUI() {
 		super(new BorderLayout());
 		initUI();
@@ -137,13 +140,13 @@ public class GenUI extends JPanel {
 
 	private void initData() {
 		loadItem(typeItem, "typeItem");
-//		loadItem(searchTypeItem, "searchTypeItem");
+		// loadItem(searchTypeItem, "searchTypeItem");
 		loadItem(validatorRuleItem, "validatorRuleItem");
 		// typeItem.add(new Item("text", "文本框"));
 		// typeItem.add(new Item("combobox", "下拉框"));
 		//
-		 searchTypeItem.add(new Item("0", "普通查询"));
-		 searchTypeItem.add(new Item("1", "范围查询"));
+		searchTypeItem.add(new Item("0", "普通查询"));
+		searchTypeItem.add(new Item("1", "范围查询"));
 		//
 		// validatorRuleItem.add(new Item("email", "邮箱"));
 		// validatorRuleItem.add(new Item("mobile", "手机号"));
@@ -185,7 +188,6 @@ public class GenUI extends JPanel {
 		table.getTableHeader().setDefaultRenderer(new CheckHeaderCellRenderer(table));
 		initData();
 		{
-			// 控件类型
 			JComboBox<Item> JComboBoxItem = new JComboBox<Item>(typeItem);
 			TableColumn brandColumn = table.getColumnModel().getColumn(4);
 			brandColumn.setCellEditor(new DefaultCellEditor(JComboBoxItem));
@@ -240,23 +242,23 @@ public class GenUI extends JPanel {
 		table.setFillsViewportHeight(true);
 		table.setAutoCreateRowSorter(true);
 
-		classLabel = new JLabel("类名");
+		classLabel = new JLabel("  类名");
 		classTextField = new JTextField();
 		classTextField.setText(Person.class.getName());
 
-		entityLabel = new JLabel("命名空间");
+		entityLabel = new JLabel("  命名空间");
 		entityTextField = new JTextField();
 		entityTextField.setText("person");
 
-		formColumnsLabel = new JLabel("表单列数");
+		formColumnsLabel = new JLabel("  表单列数");
 		formColumnsTextField = new JTextField();
 		formColumnsTextField.setText("2");
 
-		detailColumnsLabel = new JLabel("详情列数");
+		detailColumnsLabel = new JLabel("  详情列数");
 		detailColumnsTextField = new JTextField();
 		detailColumnsTextField.setText("2");
 
-		searchColumnsLabel = new JLabel("查询框列数");
+		searchColumnsLabel = new JLabel("  查询框列数");
 		searchColumnsTextField = new JTextField();
 		searchColumnsTextField.setText("4");
 		FileSystemView fsv = FileSystemView.getFileSystemView(); // 注意了，这里重要的一句
@@ -273,22 +275,23 @@ public class GenUI extends JPanel {
 		exportButton = new JButton("导出");
 	}
 
-	JPanel leftPanel = new JPanel();
-
 	private void initLayout() {
 		JScrollPane scrollPane = new JScrollPane(table);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		JPanel rightPanel = new JPanel();
-		rightPanel.add(loadFieldsButton);
-		rightPanel.add(clearListButton);
-		rightPanel.add(generateButton);
-		rightPanel.add(importButton);
-		rightPanel.add(exportButton);
+		gridBagLayout.columnWeights=new double[]{0.1,0.2,0.7};
+		gridBagLayout.rowWeights=new double[]{0.2,0.2,0.2,0.2,0.2};
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		buttonPanel.add(loadFieldsButton);
+		buttonPanel.add(clearListButton);
+		buttonPanel.add(generateButton);
+		buttonPanel.add(importButton);
+		buttonPanel.add(exportButton);
 
-		leftPanel.setLayout(gridBagLayout);
+		northPanel.setLayout(gridBagLayout);
 		addUI(classLabel, 1, 1);
 		addUI(classTextField, 2, 1);
-		addUI(rightPanel, 3, 1);
+		addUI(buttonPanel, 3, 1);
 
 		addUI(entityLabel, 1, 2);
 		addUI(entityTextField, 2, 2);
@@ -302,27 +305,16 @@ public class GenUI extends JPanel {
 		addUI(searchColumnsLabel, 1, 5);
 		addUI(searchColumnsTextField, 2, 5);
 
-		add(leftPanel, BorderLayout.NORTH);
+		add(northPanel, BorderLayout.NORTH);
 		add(scrollPane, BorderLayout.CENTER);
 	}
 
 	private void addUI(Component component, int gridx, int gridy) {
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.gridx = gridx;
-		gridBagConstraints.gridy = gridy;
+		gridBagConstraints.gridx = gridx-1;
+		gridBagConstraints.gridy = gridy-1;
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		// gridBagConstraints.gridwidth=gridx;
-		if (gridx == 1) {
-			// gridBagConstraints.fill = GridBagConstraints.NONE;
-		}
-		if (gridx == 2) {
-			// gridBagConstraints.fill = GridBagConstraints.NONE;
-		}
-		if (gridx == 3) {
-			gridBagConstraints.gridwidth = 4;
-		}
-		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		leftPanel.add(component, gridBagConstraints);
+		northPanel.add(component, gridBagConstraints);
 	}
 
 	private void initAction() {
@@ -358,12 +350,12 @@ public class GenUI extends JPanel {
 								continue;
 							}
 							Comment comment = field.getAnnotation(Comment.class);
-							String label = "字段备注" + i;
+							String label = "";
 							if (comment != null) {
 								label = comment.comment();
 							}
 							i++;
-							Object[] data = { "" + i, name, label, "国际化" + i, "text", "", new Boolean(false),
+							Object[] data = { "" + i, name, label, "", "text", "", new Boolean(false),
 									new Boolean(false), new Boolean(false), new Boolean(false), "0", "",
 									new Boolean(false), "", new Boolean(false) };
 							tableM.addRow(render(data));
@@ -406,7 +398,10 @@ public class GenUI extends JPanel {
 											uiFile.getFormPanel().toString(), "GB2312", false);
 									FileUtils.writeStringToFile(new File(file, params.getEntity() + "Detail.html"),
 											uiFile.getDetailPanel().toString(), "GB2312", false);
-									JOptionPane.showMessageDialog(GenUI.this, String.format("生成了三个文件%s,%s,%s", params.getEntity() + "List.html",params.getEntity() + "Form.html",params.getEntity() + "Detail.html"));
+									JOptionPane.showMessageDialog(GenUI.this,
+											String.format("生成了三个文件%s,%s,%s", params.getEntity() + "List.html",
+													params.getEntity() + "Form.html",
+													params.getEntity() + "Detail.html"));
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -428,18 +423,17 @@ public class GenUI extends JPanel {
 				new Thread(new Runnable() {
 
 					public void run() {
-						clearTable();
 						int returnVal = fc.showOpenDialog(GenUI.this);
 						if (returnVal == JFileChooser.APPROVE_OPTION) {
 							File file = fc.getSelectedFile();
 							try {
 								String str = FileUtils.readFileToString(file, "GB2312");
 								UIParams params = JSON.parseObject(str, UIParams.class);
+								clearTable();
 								entityTextField.setText(params.getEntity());
 								formColumnsTextField.setText(params.getFormColumns() + "");
 								detailColumnsTextField.setText(params.getDetailColumns() + "");
 								searchColumnsTextField.setText(params.getSearchColumns() + "");
-
 								List<UIParam> uiParams = params.getUiParams();
 								int i = 0;
 								for (UIParam uiParam : uiParams) {
@@ -494,7 +488,7 @@ public class GenUI extends JPanel {
 		}
 	}
 
-	public static UIFile generate(UIParams params) throws Exception {
+	private static UIFile generate(UIParams params) throws Exception {
 		UIPanel uiPanel = UIUtils.convert(params);
 		EasyuiUIcg easyuiUIcg = new EasyuiUIcg();
 		UIFile uiFile = easyuiUIcg.generate(uiPanel);
@@ -518,7 +512,18 @@ public class GenUI extends JPanel {
 		frame.setContentPane(newContentPane);
 
 		// Display the window.
-		frame.pack();
+		// frame.pack();
+		// 方式1：取整个显示屏幕的大小，包含了任务栏的高度。
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		// int w=dim.width;
+		// int h=dim.height;
+
+		// 方式2：不包括任务栏的屏幕大小
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle rect = ge.getMaximumWindowBounds();
+		int w = rect.width;
+		int h = rect.height;
+		frame.setSize(w, h);
 		frame.setVisible(true);
 	}
 
@@ -529,7 +534,7 @@ public class GenUI extends JPanel {
 		return data;
 	}
 
-	public String getKey(Vector<Item> vector, String value) {
+	private static String getKey(Vector<Item> vector, String value) {
 		for (Item item : vector) {
 			if (item.getValue().equals(value)) {
 				return item.getKey();
@@ -538,7 +543,7 @@ public class GenUI extends JPanel {
 		return value;
 	}
 
-	public String getValue(Vector<Item> vector, String key) {
+	private static String getValue(Vector<Item> vector, String key) {
 		for (Item item : vector) {
 			if (item.getKey().equals(key)) {
 				return item.getValue();
