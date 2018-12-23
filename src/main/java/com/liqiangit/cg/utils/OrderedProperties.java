@@ -1,4 +1,4 @@
-package com.liqiangit.cg.swing;
+package com.liqiangit.cg.utils;
 
 import java.util.Collections;
 import java.util.Enumeration;
